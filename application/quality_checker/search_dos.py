@@ -3,8 +3,8 @@ from os import getenv
 from aws_lambda_powertools.logging import Logger
 from psycopg import Connection
 
-from common.commissioned_service_type import CommissionedServiceType
-from common.constants import DOS_ACTIVE_STATUS_ID, PHARMACY_SERVICE_TYPE_IDS
+from common.commissioned_service_type import PALLIATIVE_CARE, CommissionedServiceType
+from common.constants import DISTANCE_SELLING_PHARMACY_ID, DOS_ACTIVE_STATUS_ID, PHARMACY_SERVICE_TYPE_IDS
 from common.dos import DoSService
 from common.dos_db_connection import query_dos_db
 
@@ -83,6 +83,9 @@ def search_for_incorrectly_profiled_z_code_on_incorrect_type(
         list[DoSService]: List of matching services.
     """
     matchable_service_types = PHARMACY_SERVICE_TYPE_IDS.copy()
+    if service_type == PALLIATIVE_CARE:
+        # Remove DSPs from check, as it's valid for the palliative z-code to be present on them
+        matchable_service_types.remove(DISTANCE_SELLING_PHARMACY_ID)
     matchable_service_types.remove(service_type.DOS_TYPE_ID)
     starting_character = getenv("ODSCODE_STARTING_CHARACTER") or "f"
     cursor = query_dos_db(

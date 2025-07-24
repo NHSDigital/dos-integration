@@ -235,7 +235,7 @@ This testing includes:
 - Check data when passed between components
 - Meets business needs of the application
 
-This testing is generally done by a tester
+This testing is generally done by a tester.
 
 Prerequisites
 

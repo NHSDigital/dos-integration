@@ -240,7 +240,7 @@ This testing is generally done by a tester
 Prerequisites
 
     assume # Granted assume AWS Role
-    Sign into Non-Prod VPN # To connect to lambdas within the VPC
+    Sign into Non-Prod VPN #  To connect to lambdas within the VPC
     IP is in the IP Allow List # To connect to the API Gateway
     make tester-build
 

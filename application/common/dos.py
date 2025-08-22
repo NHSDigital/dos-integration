@@ -5,6 +5,7 @@ from typing import Self
 
 from aws_lambda_powertools.logging import Logger
 from psycopg import Connection
+from psycopg.rows import DictRow
 
 from .constants import (
     DOS_ACTIVE_STATUS_ID,
@@ -221,6 +222,11 @@ def get_specified_opening_times_from_db(connection: Connection, service_id: int)
     return specified_opening_times
 
 
+def convert_db_to_specified_opening_times(db_specified_opening_times: list[DictRow]) -> list[SpecifiedOpeningTime]:
+    """Retrieves specified opening times from  DoS database."""
+    return db_rows_to_spec_open_times(db_specified_opening_times)
+
+
 def get_standard_opening_times_from_db(connection: Connection, service_id: int) -> StandardOpeningTimes:
     """Retrieves standard opening times from DoS database.
 
@@ -244,6 +250,15 @@ def get_standard_opening_times_from_db(connection: Connection, service_id: int) 
     return standard_opening_times
 
 
+def convent_db_to_standard_opening_times(db_std_opening_times: list[DictRow]) -> StandardOpeningTimes:
+    """Retrieves standard opening times from DoS database.
+
+    If the service id does not even match any service this function will still return a blank StandardOpeningTime
+    with no opening periods.
+    """
+    return db_rows_to_std_open_times(db_std_opening_times)
+
+
 def db_rows_to_spec_open_times(db_rows: Iterable[dict]) -> list[SpecifiedOpeningTime]:
     """Turns a set of dos database rows into a list of SpecifiedOpenTime objects.
 
@@ -264,6 +279,32 @@ def db_rows_to_spec_open_times(db_rows: Iterable[dict]) -> list[SpecifiedOpening
     return specified_opening_times
 
 
+def db_big_rows_to_spec_open_times(db_rows: Iterable[dict]) -> list[SpecifiedOpeningTime]:
+    """Turns a set of dos database rows into a list of SpecifiedOpenTime objects.
+
+    note: The rows must to be for the same service.
+    """
+    specified_opening_times = []
+    specified_op_times_ids = []
+    db_rows_refined = []
+    for row in list(db_rows):
+        if row["ssot_id"] is not None and row["ssot_id"] not in specified_op_times_ids:
+            specified_op_times_ids.append(row["ssot_id"])
+            db_rows_refined.append(row)
+    date_sorted_rows = sorted(db_rows_refined, key=lambda row: (row["date"], row["date_starttime"]))
+    for date, db_rows_refined in groupby(date_sorted_rows, lambda row: row["date"]):
+        is_open = True
+        open_periods = []
+        for row in list(db_rows_refined):
+            if row["isclosed"] is True:
+                is_open = False
+            else:
+                open_periods.append(OpenPeriod(row["date_starttime"], row["date_endtime"]))
+        specified_opening_times.append(SpecifiedOpeningTime(open_periods, date, is_open))
+
+    return specified_opening_times
+
+
 def db_rows_to_std_open_times(db_rows: Iterable[dict]) -> StandardOpeningTimes:
     """Turns a set of dos database rows into a StandardOpeningTime object.
 
@@ -276,6 +317,24 @@ def db_rows_to_std_open_times(db_rows: Iterable[dict]) -> StandardOpeningTimes:
         end = row["endtime"]
         open_period = OpenPeriod(start, end)
         standard_opening_times.add_open_period(open_period, weekday)
+    return standard_opening_times
+
+
+def db_big_rows_to_std_open_times(db_rows: Iterable[dict]) -> StandardOpeningTimes:
+    """Turns a set of dos database rows into a StandardOpeningTime object.
+
+    note: The rows must be for the same service.
+    """
+    standard_opening_times = StandardOpeningTimes()
+    std_op_times_ids = []
+    for row in db_rows:
+        if row["sdot_id"] is not None and row["sdot_id"] not in std_op_times_ids:
+            std_op_times_ids.append(row["sdot_id"])
+            weekday = row["name"].lower()
+            start = row["day_starttime"]
+            end = row["day_endtime"]
+            open_period = OpenPeriod(start, end)
+            standard_opening_times.add_open_period(open_period, weekday)
     return standard_opening_times
 
 

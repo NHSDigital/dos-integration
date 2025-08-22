@@ -227,7 +227,7 @@ def save_specified_opening_times_into_db(
         )
         cursor.close()
         for specified_opening_times_day in specified_opening_times_changes:
-            logger.info(f"Saving specfied opening times for: {specified_opening_times_day}")
+            logger.info(f"Saving specified opening times for: {specified_opening_times_day}")
             cursor = query_dos_db(
                 connection=connection,
                 query=(
@@ -244,7 +244,7 @@ def save_specified_opening_times_into_db(
                 open_period: OpenPeriod  # Type hint for the for loop
                 for open_period in specified_opening_times_day.open_periods:
                     logger.debug(
-                        "Saving standard opening times period for dayid: "
+                        "Saving specified opening times period for dayid: "
                         f"{specified_opening_times_day.date}, period: {open_period}",
                     )
                     cursor = query_dos_db(

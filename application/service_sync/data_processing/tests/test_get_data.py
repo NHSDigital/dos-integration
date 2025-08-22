@@ -51,23 +51,8 @@ def test_get_dos_service_and_history_no_match(
 ) -> None:
     # Arrange
     service_id = 12345
-    mock_query_dos_db.return_value.fetchall.return_value = []
+    mock_query_dos_db.return_value.fetchone.return_value = None
     # Act
     with pytest.raises(ValueError, match=f"Service ID {service_id} not found"):
-        get_dos_service_and_history(service_id)
-    mock_connect_to_db_writer.assert_called_once()
-
-
-@patch(f"{FILE_PATH}.query_dos_db")
-@patch(f"{FILE_PATH}.connect_to_db_writer")
-def test_get_dos_service_and_history_mutiple_matches(
-    mock_connect_to_db_writer: MagicMock,
-    mock_query_dos_db: MagicMock,
-) -> None:
-    # Arrange
-    service_id = 12345
-    mock_query_dos_db.return_value.fetchall.return_value = [["Test"], ["Test"]]
-    # Act
-    with pytest.raises(ValueError, match=f"Multiple services found for Service Id: {service_id}"):
         get_dos_service_and_history(service_id)
     mock_connect_to_db_writer.assert_called_once()

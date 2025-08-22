@@ -168,11 +168,11 @@ Prerequisites (first setup only)
 
 To add an IP address to the IP allow lists, Ensure you're authenticated for access to AWS and run the following command.
 
-    make update-all-ip-allowlists
+    make update-all-ip-allowlists [WARNING: Not working the stack for this one needs fixing (likely SSO issue)]
 
 To add an IP address to the IP allow lists and deploy the allow list to environment run the following command.The `PROFILE` delineates which environment to update with the latest IP allow list. Set `ENVIRONMENT` if you are changing an environment not linked to your branch
 
-    make update-ip-allowlists-and-deploy-allowlist PROFILE=dev
+    make update-ip-allowlists-and-deploy-allowlist PROFILE=dev [WARNING: Not working the stack for this one needs fixing (likely SSO issue)]
 
 ### DoS Database Connection
 

@@ -4,6 +4,8 @@ from unittest.mock import MagicMock, patch
 
 from application.common.dos import (
     DoSService,
+    db_big_rows_to_spec_open_times,
+    db_big_rows_to_std_open_times,
     db_rows_to_spec_open_times,
     db_rows_to_std_open_times,
     get_dos_locations,
@@ -584,6 +586,91 @@ def test_db_rows_to_spec_open_times() -> None:
     assert spec_open_times == expected_spec_open_times
 
 
+def test_db_big_rows_to_spec_open_times() -> None:
+    db_rows = [
+        {
+            "serviceid": 1,
+            "date": date(2019, 5, 6),
+            "date_starttime": time(8, 0, 0),
+            "date_endtime": time(20, 0, 0),
+            "isclosed": False,
+            "ssot_id": 123,
+        },
+        {
+            "serviceid": 1,
+            "date": date(2019, 5, 6),
+            "date_starttime": time(21, 0, 0),
+            "date_endtime": time(22, 0, 0),
+            "isclosed": False,
+            "ssot_id": 324,
+        },
+        {
+            "serviceid": 1,
+            "date": date(2019, 5, 27),
+            "date_starttime": time(8, 0, 0),
+            "date_endtime": time(20, 0, 0),
+            "isclosed": False,
+            "ssot_id": 768,
+        },
+        {
+            "serviceid": 1,
+            "date": date(2019, 8, 26),
+            "date_starttime": time(8, 0, 0),
+            "date_endtime": time(20, 0, 0),
+            "isclosed": False,
+            "ssot_id": 987,
+        },
+        {
+            "serviceid": 1,
+            "date": date(2019, 9, 20),
+            "date_starttime": None,
+            "date_endtime": None,
+            "isclosed": True,
+            "ssot_id": 567,
+        },
+        {
+            "serviceid": 1,
+            "date": date(2020, 5, 6),
+            "date_starttime": time(6, 0, 0),
+            "date_endtime": time(7, 0, 0),
+            "isclosed": False,
+            "ssot_id": 876,
+        },
+        {
+            "serviceid": 1,
+            "date": date(2020, 5, 6),
+            "date_starttime": time(6, 0, 0),
+            "date_endtime": time(7, 0, 0),
+            "isclosed": False,
+            "ssot_id": 876,
+        },
+        {
+            "serviceid": 1,
+            "date": None,
+            "date_starttime": None,
+            "date_endtime": None,
+            "isclosed": None,
+            "ssot_id": None,
+        },
+    ]
+
+    spec_open_times = db_big_rows_to_spec_open_times(db_rows)
+
+    expected_spec_open_times = [
+        SpecifiedOpeningTime(
+            [OpenPeriod.from_string_times("08:00", "20:00"), OpenPeriod.from_string_times("21:00", "22:00")],
+            date(2019, 5, 6),
+            True,
+        ),
+        SpecifiedOpeningTime([OpenPeriod.from_string_times("08:00", "20:00")], date(2019, 5, 27), True),
+        SpecifiedOpeningTime([OpenPeriod.from_string_times("08:00", "20:00")], date(2019, 8, 26), True),
+        SpecifiedOpeningTime([], date(2019, 9, 20), False),
+        SpecifiedOpeningTime([OpenPeriod.from_string_times("06:00", "07:00")], date(2020, 5, 6), True),
+    ]
+
+    assert spec_open_times == expected_spec_open_times
+
+
 def test_db_rows_to_std_open_time() -> None:
     db_rows = [
         {"serviceid": 1, "dayid": 0, "name": "Monday", "starttime": time(8, 0, 0), "endtime": time(17, 0, 0)},
@@ -607,6 +694,90 @@ def test_db_rows_to_std_open_time() -> None:
     expected_std_open_times.sunday = [OpenPeriod.from_string_times("13:00", "15:30")]
 
     actual_std_open_times = db_rows_to_std_open_times(db_rows)
+
+    assert actual_std_open_times == expected_std_open_times
+
+
+def test_db_big_rows_to_std_open_time() -> None:
+    db_rows = [
+        {
+            "serviceid": 1,
+            "dayid": 0,
+            "name": "Monday",
+            "day_starttime": time(8, 0, 0),
+            "day_endtime": time(17, 0, 0),
+            "sdot_id": 230,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 6,
+            "name": "Sunday",
+            "day_starttime": time(13, 0, 0),
+            "day_endtime": time(15, 30, 0),
+            "sdot_id": 231,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 1,
+            "name": "Tuesday",
+            "day_starttime": time(13, 0, 0),
+            "day_endtime": time(18, 0, 0),
+            "sdot_id": 233,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 4,
+            "name": "Friday",
+            "day_starttime": time(13, 0, 0),
+            "day_endtime": time(15, 30, 0),
+            "sdot_id": 232,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 6,
+            "name": "Wednesday",
+            "day_starttime": time(7, 0, 0),
+            "day_endtime": time(15, 30, 0),
+            "sdot_id": 234,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 1,
+            "name": "Tuesday",
+            "day_starttime": time(8, 0, 0),
+            "day_endtime": time(12, 0, 0),
+            "sdot_id": 287,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 4,
+            "name": "Thursday",
+            "day_starttime": time(11, 0, 0),
+            "day_endtime": time(13, 30, 0),
+            "sdot_id": 238,
+        },
+        {
+            "serviceid": 1,
+            "dayid": 4,
+            "name": "Thursday",
+            "day_starttime": time(11, 0, 0),
+            "day_endtime": time(13, 30, 0),
+            "sdot_id": 238,
+        },
+    ]
+
+    expected_std_open_times = StandardOpeningTimes()
+    expected_std_open_times.monday = [OpenPeriod.from_string_times("08:00", "17:00")]
+    expected_std_open_times.tuesday = [
+        OpenPeriod.from_string_times("08:00", "12:00"),
+        OpenPeriod.from_string_times("13:00", "18:00"),
+    ]
+    expected_std_open_times.wednesday = [OpenPeriod.from_string_times("07:00", "15:30")]
+    expected_std_open_times.thursday = [OpenPeriod.from_string_times("11:00", "13:30")]
+    expected_std_open_times.friday = [OpenPeriod.from_string_times("13:00", "15:30")]
+    expected_std_open_times.sunday = [OpenPeriod.from_string_times("13:00", "15:30")]
+
+    actual_std_open_times = db_big_rows_to_std_open_times(db_rows)
 
     assert actual_std_open_times == expected_std_open_times
 

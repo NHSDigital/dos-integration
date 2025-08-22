@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.12-arm64
+FROM public.ecr.aws/lambda/python:3.13-arm64
 # Update Pip
 RUN python -m pip install --upgrade pip
 # Copy Python requirements

@@ -1,1 +1,1 @@
-aws-lambda-powertools[tracer] ~= 2.43.0
+aws-lambda-powertools[tracer] ~= 3.19.0

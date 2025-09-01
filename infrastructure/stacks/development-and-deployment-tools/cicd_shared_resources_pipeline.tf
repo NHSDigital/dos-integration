@@ -20,7 +20,7 @@ resource "aws_codepipeline" "cicd_shared_resources_deployment_pipeline" {
       configuration = {
         S3Bucket             = var.cicd_shared_resoures_deployment_pipeline_artefact_bucket
         S3ObjectKey          = "repository.zip"
-        PollForSourceChanges = "True"
+        DetectChanges        = "True"
       }
     }
   }

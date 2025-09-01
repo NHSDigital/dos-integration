@@ -21,7 +21,7 @@ resource "aws_codepipeline" "cicd_blue_green_deployment_pipeline" {
       configuration = {
         S3Bucket             = var.cicd_blue_green_deployment_pipeline_artefact_bucket
         S3ObjectKey          = "repository.zip"
-        PollForSourceChanges = "True"
+        DetectChanges        = "True"
       }
     }
   }

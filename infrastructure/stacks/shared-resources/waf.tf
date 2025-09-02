@@ -76,13 +76,13 @@ resource "aws_wafv2_web_acl" "di_endpoint_waf" {
         sensitivity_level = "HIGH"
         text_transformation {
           priority = 0
-          type = "NONE"
+          type     = "NONE"
         }
       }
     }
     visibility_config {
-      sampled_requests_enabled = true
-      metric_name = var.waf_custom_sqli_rule_name
+      sampled_requests_enabled   = true
+      metric_name                = var.waf_custom_sqli_rule_name
       cloudwatch_metrics_enabled = true
     }
   }

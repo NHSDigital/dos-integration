@@ -50,6 +50,8 @@ TF_VAR_pipeline_topic_name := $(PROJECT_ID)-$(ENVIRONMENT)-pipeline-topic
 TF_VAR_pipeline_notification_name := $(PROJECT_ID)-$(ENVIRONMENT)-pipeline-notification
 TF_VAR_cicd_blue_green_deployment_pipeline_nofitication_name := $(PROJECT_ID)-$(ENVIRONMENT)-blue-green-pipeline-notification
 TF_VAR_cicd_shared_resources_deployment_pipeline_nofitication_name := $(PROJECT_ID)-$(ENVIRONMENT)-shared-resources-pipeline-notification
+TF_VAR_cicd_blue_green_deployment_pipeline_eventbridge_rule_name := $(PROJECT_ID)-$(ENVIRONMENT)-trigger-blue-green-pipeline
+TF_VAR_cicd_shared_resources_deployment_pipeline_eventbridge_rule_name := $(PROJECT_ID)-$(ENVIRONMENT)-trigger-shared-resources-pipeline
 TF_VAR_pipeline_chatbot_channel := $(PROJECT_ID)-cicd-slk-channel
 TF_VAR_nightly_rule_name := $(PROJECT_ID)-$(ENVIRONMENT)-performance-pipeline-nightly-rule
 

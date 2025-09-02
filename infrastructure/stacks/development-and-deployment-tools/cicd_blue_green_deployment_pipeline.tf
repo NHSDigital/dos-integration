@@ -21,7 +21,7 @@ resource "aws_codepipeline" "cicd_blue_green_deployment_pipeline" {
       configuration = {
         S3Bucket             = var.cicd_blue_green_deployment_pipeline_artefact_bucket
         S3ObjectKey          = "repository.zip"
-        PollForSourceChanges = "True"
+        PollForSourceChanges = "False"
       }
     }
   }
@@ -332,7 +332,6 @@ resource "aws_codepipeline" "cicd_blue_green_deployment_pipeline" {
   ]
 }
 
-
 module "cicd_blue_green_deployment_pipeline_artefact_bucket" {
   source             = "../../modules/s3"
   name               = var.cicd_blue_green_deployment_pipeline_artefact_bucket
@@ -340,4 +339,20 @@ module "cicd_blue_green_deployment_pipeline_artefact_bucket" {
   acl                = "private"
   versioning_enabled = "true"
   force_destroy      = "true"
+}
+
+resource "aws_s3_bucket_notification" "uec-dos-int-dev-eventbridge_blue_green" {
+  bucket      = module.cicd_blue_green_deployment_pipeline_artefact_bucket.s3_bucket_id
+  eventbridge = true
+  depends_on  = [module.cicd_blue_green_deployment_pipeline_artefact_bucket]
+}
+
+module "blue_green_eventbridge_trigger" {
+  source            = "../../modules/eventbridge_pipeline_trigger"
+  bucket_name       = module.cicd_blue_green_deployment_pipeline_artefact_bucket.s3_bucket_id
+  pipeline_arn      = aws_codepipeline.cicd_blue_green_deployment_pipeline.arn
+  pipeline_role_arn = data.aws_iam_role.pipeline_role.arn
+  rule_name         = var.cicd_blue_green_deployment_pipeline_eventbridge_rule_name
+  description       = "Trigger Blue/Green pipeline when repository.zip is updated"
+  depends_on        = [module.cicd_blue_green_deployment_pipeline_artefact_bucket]
 }

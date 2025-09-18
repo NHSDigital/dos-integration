@@ -139,8 +139,8 @@ batch:
     - identifier: integration_test_reporting
       env:
         compute-type: BUILD_GENERAL1_LARGE
-        image: aws/codebuild/amazonlinux2-x86_64-standard:5.0
-        type: LINUX_CONTAINER
+        image: aws/codebuild/amazonlinux2-aarch64-standard:3.0
+        type: ARM_CONTAINER
         privileged-mode: true
         variables:
           PROFILE: dev
@@ -153,8 +153,8 @@ batch:
     - identifier: integration_test_validation
       env:
         compute-type: BUILD_GENERAL1_LARGE
-        image: aws/codebuild/amazonlinux2-x86_64-standard:5.0
-        type: LINUX_CONTAINER
+        image: aws/codebuild/amazonlinux2-aarch64-standard:3.0
+        type: ARM_CONTAINER
         privileged-mode: true
         variables:
           PROFILE: dev
@@ -167,8 +167,8 @@ batch:
     - identifier: integration_test_opening_times
       env:
         compute-type: BUILD_GENERAL1_LARGE
-        image: aws/codebuild/amazonlinux2-x86_64-standard:5.0
-        type: LINUX_CONTAINER
+        image: aws/codebuild/amazonlinux2-aarch64-standard:3.0
+        type: ARM_CONTAINER
         privileged-mode: true
         variables:
           PROFILE: dev
@@ -181,8 +181,8 @@ batch:
     - identifier: integration_test_general
       env:
         compute-type: BUILD_GENERAL1_LARGE
-        image: aws/codebuild/amazonlinux2-x86_64-standard:5.0
-        type: LINUX_CONTAINER
+        image: aws/codebuild/amazonlinux2-aarch64-standard:3.0
+        type: ARM_CONTAINER
         privileged-mode: true
         variables:
           PROFILE: dev

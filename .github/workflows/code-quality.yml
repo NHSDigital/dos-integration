@@ -48,7 +48,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check Markdown format
-        uses: DavidAnson/markdownlint-cli2-action@v13
+        uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           config: .github/workflows/configs/markdownlint/.markdownlint.json
       - name: Check Markdown links

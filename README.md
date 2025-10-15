@@ -192,7 +192,7 @@ To run ruff on you branch:
 
 List all the type of test suites included and provide instructions how to execute them
 
-- Unit Testing
+- Unit
 - Integration
 - Performance
 

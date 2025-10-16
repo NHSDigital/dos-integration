@@ -1,4 +1,4 @@
-ORG_NAME = nhsd-exeter
+ORG_NAME = NHSDigital
 PROGRAMME = uec
 PROJECT_GROUP = uec/dos
 PROJECT_GROUP_SHORT = uec-dos
@@ -26,7 +26,7 @@ TF_VAR_environment = $(ENVIRONMENT)
 TF_VAR_aws_account_name = $(AWS_ACCOUNT_NAME)
 TF_VAR_deployment_secrets = $(DEPLOYMENT_SECRETS)
 PROJECT_DEPLOYMENT_SECRETS = $(DEPLOYMENT_SECRETS)
-TF_VAR_github_owner = nhsd-exeter
+TF_VAR_github_owner = NHSDigital
 TF_VAR_github_repo = dos-integration
 PARALLEL_TEST_COUNT := $(or $(PARALLEL_TEST_COUNT), auto)
 
@@ -45,11 +45,13 @@ TF_VAR_cicd_blue_green_deployment_pipeline_name := $(PROJECT_ID)-$(ENVIRONMENT)-
 TF_VAR_cicd_shared_resources_deployment_pipeline_name := $(PROJECT_ID)-$(ENVIRONMENT)-cicd-shared-resources-deployment-pipeline
 TF_VAR_blue_green_deployment_new_version_parameter_name := $(PROJECT_ID)-$(ENVIRONMENT)-blue-green-deployment-new-version
 TF_VAR_development_tools_encryption_key_alias := $(PROJECT_ID)-$(ENVIRONMENT)-development-tools-encryption-key
-TF_VAR_github_url := https://github.com/nhsd-exeter/dos-integration.git
+TF_VAR_github_url := https://github.com/NHSDigital/dos-integration.git
 TF_VAR_pipeline_topic_name := $(PROJECT_ID)-$(ENVIRONMENT)-pipeline-topic
 TF_VAR_pipeline_notification_name := $(PROJECT_ID)-$(ENVIRONMENT)-pipeline-notification
 TF_VAR_cicd_blue_green_deployment_pipeline_nofitication_name := $(PROJECT_ID)-$(ENVIRONMENT)-blue-green-pipeline-notification
 TF_VAR_cicd_shared_resources_deployment_pipeline_nofitication_name := $(PROJECT_ID)-$(ENVIRONMENT)-shared-resources-pipeline-notification
+TF_VAR_cicd_blue_green_deployment_pipeline_eventbridge_rule_name := $(PROJECT_ID)-$(ENVIRONMENT)-trigger-blue-green-pipeline
+TF_VAR_cicd_shared_resources_deployment_pipeline_eventbridge_rule_name := $(PROJECT_ID)-$(ENVIRONMENT)-trigger-shared-resources-pipeline
 TF_VAR_pipeline_chatbot_channel := $(PROJECT_ID)-cicd-slk-channel
 TF_VAR_nightly_rule_name := $(PROJECT_ID)-$(ENVIRONMENT)-performance-pipeline-nightly-rule
 

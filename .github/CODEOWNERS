@@ -1,5 +1,5 @@
-/.github @nhsd-exeter/maintainers
-/build/automation/lib @nhsd-exeter/maintainers
-/build/automation/init.mk @nhsd-exeter/maintainers
-/.gitignore @nhsd-exeter/maintainers
-/project.code-workspace @nhsd-exeter/maintainers
+/.github @NHSDigital/data-sourcing-ftrs/maintainers
+/build/automation/lib @NHSDigital/data-sourcing-ftrs/maintainers
+/build/automation/init.mk @NHSDigital/data-sourcing-ftrs/maintainers
+/.gitignore @NHSDigital/data-sourcing-ftrs/maintainers
+/project.code-workspace @NHSDigital/data-sourcing-ftrs/maintainers

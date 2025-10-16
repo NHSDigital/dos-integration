@@ -34,8 +34,8 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.sources=application,infrastructure,scripts,test,build/docker
-            -Dsonar.organization=nhsd-exeter
-            -Dsonar.projectKey=uec-dos-int
+            -Dsonar.organization=nhsdigital
+            -Dsonar.projectKey=nhsdigital_dos-integration
             -Dsonar.coverage.exclusions=tests/**,**/tests/**,infrastructure,application/dos_db_handler/**,test/**,scripts/**,application/conftest.py
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.python.version=3.12
@@ -48,7 +48,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check Markdown format
-        uses: DavidAnson/markdownlint-cli2-action@v13
+        uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           config: .github/workflows/configs/markdownlint/.markdownlint.json
       - name: Check Markdown links

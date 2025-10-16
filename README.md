@@ -102,13 +102,13 @@ The main components you will need for _basic_ development work, are your OS vers
 - Git
 - Python (The project currently runs on 3.12)
 - AWS CLI
-- Docker
+- Docker/Podman
 
 ### Clone Repository
 
 Clone the repository
 
-    git clone git@github.com:nhsd-exeter/dos-integration.git
+    git clone git@github.com:NHSDigital/dos-integration.git
     cd ./dos-integration
 
 ### AWS Authentication
@@ -192,7 +192,7 @@ To run ruff on you branch:
 
 List all the type of test suites included and provide instructions how to execute them
 
-- Unit
+- Unit Testing
 - Integration
 - Performance
 
@@ -240,7 +240,7 @@ This testing is generally done by a tester
 Prerequisites
 
     assume # Granted assume AWS Role
-    Sign into Non-Prod VPN # To connect to lambdas within the VPC
+    Sign into Non-Prod VPN #  To connect to lambdas within the VPC
     IP is in the IP Allow List # To connect to the API Gateway
     make tester-build
 

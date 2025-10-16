@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get Branch Name
-        uses: mdecoleman/pr-branch-name@2.0.0
+        uses: mdecoleman/pr-branch-name@v3.0.0
         id: branch_name
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +30,7 @@ jobs:
         run: echo "TEMPLATE_NAME=$(cat .github/PULL_REQUEST_TEMPLATE/${{ env.BRANCH_DESIGNATOR }}_pull_request_template.md > /dev/null 2>&1 && echo ${{ env.BRANCH_DESIGNATOR }}_pull_request_template.md || echo task_pull_request_template.md)" >> $GITHUB_ENV
       - name: Render Pull Request template
         id: template
-        uses: chuhlomin/render-template@v1.5
+        uses: chuhlomin/render-template@v1.10
         with:
           template: .github/PULL_REQUEST_TEMPLATE/${{ env.TEMPLATE_NAME }}
           vars: |

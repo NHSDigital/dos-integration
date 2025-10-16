@@ -1,8 +1,8 @@
 resource "aws_dynamodb_table" "message-history-table" {
-  name         = var.change_events_table_name
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
-  range_key    = "ODSCode"
+  name                        = var.change_events_table_name
+  billing_mode                = "PAY_PER_REQUEST"
+  hash_key                    = "Id"
+  range_key                   = "ODSCode"
   deletion_protection_enabled = var.ddb_delete_protection
 
   server_side_encryption {

@@ -272,7 +272,7 @@ tag-commit-to-destroy-environment: # Tag git commit to destroy deployment - mand
 	fi
 
 get-environment-from-pr:
-	ENVIRONMENT=$$(gh pr list -s merged --json number,mergeCommit,headRefName --repo=nhsd-exeter/dos-integration |  jq --raw-output '.[] | select(.number == $(PR_NUMBER)) | .headRefName | sub( ".*:*/DS-(?<x>.[0-9]*).*"; "ds-\(.x)") ')
+	ENVIRONMENT=$$(gh pr list -s merged --json number,mergeCommit,headRefName --repo=NHSDigital/dos-integration |  jq --raw-output '.[] | select(.number == $(PR_NUMBER)) | .headRefName | sub( ".*:*/DS-(?<x>.[0-9]*).*"; "ds-\(.x)") ')
 	echo $$ENVIRONMENT
 
 is-environment-deployed:

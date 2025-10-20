@@ -9,13 +9,13 @@ phases:
       - export AWS_SECRET_ACCESS_KEY=$(echo $temp_role | jq -r .Credentials.SecretAccessKey)
       - export AWS_SESSION_TOKEN=$(echo $temp_role | jq -r .Credentials.SessionToken)
       - make docker-hub-signin
-      # - make docker-pull NAME=tester VERSION=latest
-      # Using previous version digest to handle image arch issue in smoke test stage for no arm terraform image in v1.2.1
-      - make docker-pull NAME=tester DIGEST=sha256:8c90f5292a78a8ced10b7644b1269174798db2fc92b5d01a7e9dac966e13b88c
-      - docker tag $(make _docker-get-reg)/tester@sha256:8c90f5292a78a8ced10b7644b1269174798db2fc92b5d01a7e9dac966e13b88c $(make _docker-get-reg)/tester:latest
       - |
         if [[ -z "$BLUE_GREEN_ENVIRONMENT" ]]; then
+          make docker-pull NAME=tester DIGEST=sha256:8c90f5292a78a8ced10b7644b1269174798db2fc92b5d01a7e9dac966e13b88c
+          docker tag $(make _docker-get-reg)/tester@sha256:8c90f5292a78a8ced10b7644b1269174798db2fc92b5d01a7e9dac966e13b88c $(make _docker-get-reg)/tester:latest
           export BLUE_GREEN_ENVIRONMENT=$(make terraform-output STACKS=blue-green-link ENVIRONMENT=$SHARED_ENVIRONMENT OPTS='-raw connected_blue_green_environment' | tail -n1)
+        else
+          make docker-pull NAME=tester VERSION=latest
         fi
   build:
     commands:

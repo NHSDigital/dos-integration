@@ -35,6 +35,10 @@ resource "aws_lambda_event_source_mapping" "holding_queue_event_source_mapping" 
   event_source_arn = aws_sqs_queue.holding_queue.arn
   enabled          = true
   function_name    = module.service_matcher_lambda.lambda_function_arn
+
+  lifecycle {
+    ignore_changes = [ tags, tags_all ]
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "update_request_event_source_mapping" {
@@ -42,6 +46,10 @@ resource "aws_lambda_event_source_mapping" "update_request_event_source_mapping"
   event_source_arn = aws_sqs_queue.update_request_queue.arn
   enabled          = true
   function_name    = module.service_sync_lambda.lambda_function_arn
+
+  lifecycle {
+    ignore_changes = [ tags, tags_all ]
+  }
 }
 
 resource "aws_sqs_queue" "holding_queue_dlq" {
@@ -64,6 +72,10 @@ resource "aws_lambda_event_source_mapping" "holding_queue_dlq_event_source_mappi
   enabled          = true
   function_name    = module.change_event_dlq_handler_lambda.lambda_function_arn
   depends_on       = [aws_sqs_queue.holding_queue_dlq, module.change_event_dlq_handler_lambda]
+
+  lifecycle {
+    ignore_changes = [ tags, tags_all ]
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "update_request_dlq_event_source_mapping" {
@@ -72,4 +84,8 @@ resource "aws_lambda_event_source_mapping" "update_request_dlq_event_source_mapp
   enabled          = true
   function_name    = module.dos_db_update_dlq_handler_lambda.lambda_function_arn
   depends_on       = [aws_sqs_queue.update_request_dlq, module.dos_db_update_dlq_handler_lambda]
+
+  lifecycle {
+    ignore_changes = [ tags, tags_all ]
+  }
 }

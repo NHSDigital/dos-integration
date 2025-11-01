@@ -8,7 +8,7 @@
 #tfsec:ignore:aws-s3-specify-public-access-block
 module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "5.7.0"
+  version = "5.8.2"
   bucket  = var.name
   acl     = var.acl
 
